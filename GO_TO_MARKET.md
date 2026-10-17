@@ -25,3 +25,6 @@ Ask for exports with customer emails/addresses removed. Never keep their files; 
 
 ## Free deploy
 GitHub repo -> share.streamlit.io -> app.py (same steps as ratebox/DEPLOY.md). Needs your login.
+
+## Live demo
+https://storepulse-why-revenue.streamlit.app/

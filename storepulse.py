@@ -12,7 +12,8 @@ def load_orders(path_or_df) -> pd.DataFrame:
     missing = [c for c in need if c not in df.columns]
     if missing:
         raise ValueError(f"Missing columns: {missing}")
-    df["Created at"] = pd.to_datetime(df["Created at"], utc=True).dt.tz_localize(None)
+    # keep the store's local clock: drop the UTC offset instead of converting to UTC
+    df["Created at"] = pd.to_datetime(df["Created at"].astype(str).str.replace(r"\s*[+-]\d{2}:?\d{2}$", "", regex=True))
     for c in ["Created at", "Discount Code", "Refunded Amount"]:
         if c in df.columns:
             df[c] = df.groupby("Name")[c].transform("first")

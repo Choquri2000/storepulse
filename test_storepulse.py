@@ -29,3 +29,12 @@ def test_app_runs_with_demo():
     at.checkbox[0].check().run(timeout=60)
     assert not at.exception
     assert any("Alpha Mug" in c.value for c in at.code)
+
+
+def test_timezone_offset_does_not_shift_days():
+    df = sp.make_sample()
+    plain = sp.explain(sp.load_orders(df))
+    d2 = df.copy()
+    d2["Created at"] = d2["Created at"].dt.strftime("%Y-%m-%d %H:%M:%S -0400")
+    with_tz = sp.explain(sp.load_orders(d2))
+    assert abs(plain["delta"] - with_tz["delta"]) < 1e-6
